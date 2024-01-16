@@ -47,6 +47,7 @@ router.get("/linkedin/callback", async (req, res) => {
                 })
                 .then((response) => {
                     const user_info = response.data;
+                    // console.log(user_info)
 
                     if (user_info) {
                         const LinkedinID = user_info.sub;
@@ -56,14 +57,14 @@ router.get("/linkedin/callback", async (req, res) => {
                             ? user_info.picture
                             : "https://t3.ftcdn.net/jpg/03/64/62/36/360_F_364623623_ERzQYfO4HHHyawYkJ16tREsizLyvcaeg.jpg";
 
-              
 
                         const token = jwt.sign(
-                            { LinkedinID: LinkedinID, name: name, email: email, picture: picture },
-                            process.env.JWT_SECRET
+                        { LinkedinID: LinkedinID, name: name, email: email, picture: picture },
+                        process.env.JWT_SECRET
                         );
-
-             
+                        
+                        (console.log(LinkedinID, name, email, picture))
+                    
                         res.redirect(`http://127.0.0.1:5173/home?token=${token}`);
                     } else {
               
@@ -74,7 +75,7 @@ router.get("/linkedin/callback", async (req, res) => {
                     }
                 })
                 .catch((err) => {
-                    console.log("ERROR: ", err);
+                    console.log("Error: ", err);
                     res.status(500).json({
                         message: "Internal Server Error",
                         error: err,
@@ -86,14 +87,15 @@ router.get("/linkedin/callback", async (req, res) => {
                 message: "Access token not found",
             });
         }
-    } catch (error) {
-        console.log("Error: ", error);
+    } catch (err) {
+        console.log("Error: ", err);
         res.status(500).json({
             message: "Internal Server Error",
-            error: error,
+            error: err,
         });
     }
 });
+
 
 
  module.exports = router;
