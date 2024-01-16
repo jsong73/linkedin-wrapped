@@ -18,6 +18,8 @@ passport.use(new LinkedInStrategy({
     state: true
   }, function( accessToken, refreshToken, profile, done){
         req.session.accessToken = accessToken;
+
+        console.log(accessToken)
         process.nextTick( function () {
           return done(null, profile);
         });
@@ -44,7 +46,7 @@ app.use (passport.initialize());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use('/callback', callback);
+app.use('/auth', callback);
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, "client/dist")));
 
