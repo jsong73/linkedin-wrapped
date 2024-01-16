@@ -64,7 +64,7 @@ router.get("/linkedin/callback", async (req, res) => {
                         );
 
              
-                        // res.redirect(`http://127.0.0.1:5173/home?token=${token}`);
+                        res.redirect(`http://127.0.0.1:5173/home?token=${token}`);
                     } else {
               
                         console.log("User info not found");

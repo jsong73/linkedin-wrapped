@@ -3,20 +3,18 @@ import { useState } from 'react';
 import axios from 'axios';
 
 function App() {
-  const [token, setToken] = useState('');
 
-  const linkedInLogin = async () => {
-    // Open LinkedIn login window
-    window.open("http://127.0.0.1:5173/callback/linkedin", "_self");
-  };
+
+  const linkedInlogin = async () => {
+    window.open("http://localhost:3001/auth/linkedin", "_self");
+    console.log("api hit!");
+   };
+
 
   return (
     <div>
-      <button onClick={linkedInLogin}>LinkedIn Login</button>
-      <br />
-      <label>Token:</label>
-      <input type="text" value={token} onChange={(e) => setToken(e.target.value)} />
-      <button onClick={getInfo}>Get User Info</button>
+      <button onClick={linkedInlogin}>LinkedIn Login</button>
+    
     </div>
   );
 }
