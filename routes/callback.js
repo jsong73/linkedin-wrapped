@@ -15,7 +15,7 @@ router.get(
 
 router.get("/linkedin/callback", async (req, res) => {
     try {
-        console.log(req.query.id);
+        // console.log(req.query.id);
 
         const code = req.query.code;
         console.log("code--> ", code);
@@ -31,16 +31,69 @@ router.get("/linkedin/callback", async (req, res) => {
             })
             .catch((err) => {
                 console.log(err);
+                res.status(500).json({
+                    message: "Internal Server Error",
+                    error: err,
+                });
             });
 
+        if (access_token) {
+            const user_info_url = `https://api.linkedin.com/v2/userinfo`;
+            const res_user_info = await axios
+                .get(user_info_url, {
+                    headers: {
+                        Authorization: `Bearer ${access_token}`,
+                    },
+                })
+                .then((response) => {
+                    const user_info = response.data;
+
+                    if (user_info) {
+                        const LinkedinID = user_info.sub;
+                        const name = user_info.name;
+                        const email = user_info.email;
+                        const picture = user_info.picture
+                            ? user_info.picture
+                            : "https://t3.ftcdn.net/jpg/03/64/62/36/360_F_364623623_ERzQYfO4HHHyawYkJ16tREsizLyvcaeg.jpg";
+
+              
+
+                        const token = jwt.sign(
+                            { LinkedinID: LinkedinID, name: name, email: email, picture: picture },
+                            process.env.JWT_SECRET
+                        );
+
+             
+                        // res.redirect(`http://127.0.0.1:5173/home?token=${token}`);
+                    } else {
+              
+                        console.log("User info not found");
+                        res.status(500).json({
+                            message: "User info not found",
+                        });
+                    }
+                })
+                .catch((err) => {
+                    console.log("ERROR: ", err);
+                    res.status(500).json({
+                        message: "Internal Server Error",
+                        error: err,
+                    });
+                });
+        } else {
+            console.log("access_token not found");
+            res.status(500).json({
+                message: "Access token not found",
+            });
+        }
     } catch (error) {
+        console.log("Error: ", error);
         res.status(500).json({
             message: "Internal Server Error",
-            error,
+            error: error,
         });
-    
     }
 });
 
 
-   module.exports = router;
+ module.exports = router;

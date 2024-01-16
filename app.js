@@ -63,7 +63,6 @@ app.get(CONSTANTS.callbackUrl,passport.authenticate(CONSTANTS.strategy, {
 })
 );
 
-
      
 app.listen(CONSTANTS.PORT, () => console.log(`listening on http://localhost:${CONSTANTS.PORT}`))
 
