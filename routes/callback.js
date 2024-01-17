@@ -14,15 +14,18 @@ router.get(
 )
 
 router.get("/linkedin/callback", async (req, res) => {
+
     try {
         // console.log(req.query.id);
 
         const code = req.query.code;
         console.log("code--> ", code);
-
-        let access_token;
-
+      
         const access_token_url = `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&code=${code}&redirect_uri=${process.env.LINKEDIN_REDIRECT_URI}&client_id=${process.env.LINKEDIN_CLIENT_ID}&client_secret=${process.env.LINKEDIN_CLIENT_SECRET}`;
+
+            
+         let access_token;
+
         const res_token = await axios
             .post(access_token_url)
             .then((res) => {
@@ -47,7 +50,7 @@ router.get("/linkedin/callback", async (req, res) => {
                 })
                 .then((response) => {
                     const user_info = response.data;
-                    // console.log(user_info)
+                    console.log("user info-->", user_info)
 
                     if (user_info) {
                         const LinkedinID = user_info.sub;
@@ -62,10 +65,26 @@ router.get("/linkedin/callback", async (req, res) => {
                         { LinkedinID: LinkedinID, name: name, email: email, picture: picture },
                         process.env.JWT_SECRET
                         );
-                        
-                        (console.log(LinkedinID, name, email, picture))
-                    
-                        res.redirect(`http://127.0.0.1:5173/home?token=${token}`);
+
+                   
+
+                        res.status(200).json({
+                            token: token,
+                            user_info: {
+                                LinkedinID,
+                                name,
+                                email,
+                                picture,
+                            },
+                        });
+           
+                        // res.redirect("http://localhost:3000/profile");
+
+                        // res.JSON({
+                        //     token: token,
+                        //     user_info: user_info,
+                        // });
+
                     } else {
               
                         console.log("User info not found");

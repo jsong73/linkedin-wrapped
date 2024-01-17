@@ -5,6 +5,7 @@ const session= require("express-session")
 const CONSTANTS = require("./constants")
 const path = require('path');
 
+
 const callback = require("./routes/callback")
 const app = express();
 require("dotenv").config();
@@ -42,7 +43,6 @@ app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitia
 
 app.use (passport.initialize());
 
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -63,7 +63,8 @@ app.get(CONSTANTS.callbackUrl,passport.authenticate(CONSTANTS.strategy, {
 })
 );
 
-     
+
+
 app.listen(CONSTANTS.PORT, () => console.log(`listening on http://localhost:${CONSTANTS.PORT}`))
 
 module.exports = app;

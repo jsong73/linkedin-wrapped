@@ -1,21 +1,21 @@
-import './App.css';
-;
+import React, {useState} from "react"
 
-function App() {
+const App = () => {
+  const [isAuthenticated, setAuthentication] = useState(false);
+ 
 
-
-  const linkedInlogin = async () => {
+  const linkedInlogin = () => {
     window.open("http://localhost:3001/auth/linkedin", "_self");
     console.log("api hit!");
-   };
+  };
 
 
-  return (
     <div>
-      <button onClick={linkedInlogin}>LinkedIn Login</button>
-    
+
+<button onClick={linkedInlogin}>Login to Linkedin</button>
+
     </div>
-  );
-}
+  
+};
 
 export default App;
