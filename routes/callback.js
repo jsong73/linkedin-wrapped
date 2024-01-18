@@ -4,6 +4,7 @@ const axios = require('axios');
 const jwt = require("jsonwebtoken");
 require("dotenv").config()
 
+// localhost:3001/auth/linkedin
 router.get(
     "/linkedin",
     passport.authenticate("linkedin", {
@@ -13,6 +14,7 @@ router.get(
     (req, res) => {}
 )
 
+// localhost:3001/auth/linkedin/callback
 router.get("/linkedin/callback", async (req, res) => {
 
     try {
@@ -68,17 +70,18 @@ router.get("/linkedin/callback", async (req, res) => {
 
                    
 
-                        // res.status(200).json({
-                        //     token: token,
-                        //     user_info: {
-                        //         LinkedinID,
-                        //         name,
-                        //         email,
-                        //         picture,
-                        //     },
-                        // });
-           
-                        res.redirect("http://localhost:3000/profile");
+                        res.status(200).json({
+                            token: token,
+                            user_info: {
+                                LinkedinID,
+                                name,
+                                email,
+                                picture,
+                            },
+                        });
+                    
+                        // res.redirect("http://localhost:3000/profile");
+                     
 
                         // res.JSON({
                         //     token: token,

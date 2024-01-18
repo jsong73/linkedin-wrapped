@@ -7,6 +7,6 @@ const CONSTANTS={
     failureUrl:'/login',
     linkedInScopes: ["openid", "profile", "email"],
     strategy:'linkedin'
-    }
+}
     
-    module.exports=CONSTANTS;
+module.exports=CONSTANTS;

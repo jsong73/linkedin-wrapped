@@ -5,26 +5,9 @@ const session= require("express-session")
 const CONSTANTS = require("./constants")
 const path = require('path');
 
-
 const callback = require("./routes/callback")
 const app = express();
 require("dotenv").config();
-
-
-passport.use(new LinkedInStrategy({
-    clientID: process.env.LINKEDIN_CLIENT_ID,
-    clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
-    callbackURL: `${CONSTANTS.callbackUrlDomain}:${CONSTANTS.PORT}${CONSTANTS.callbackUrl}`,
-    scope: CONSTANTS.linkedInScopes,
-    state: true
-  }, function( accessToken, refreshToken, profile, done){
-        req.session.accessToken = accessToken;
-
-        console.log(accessToken)
-        process.nextTick( function () {
-          return done(null, profile);
-        });
-}));
 
 
 passport.serializeUser((user, done) => {
@@ -38,13 +21,30 @@ passport.deserializeUser((user, done) => {
 
 // MIDDLEWARES
 
-// create session
+// create session and passport init 
 app.use(session({ secret: process.env.SESSION_SECRET, resave: true, saveUninitialized: true }));
-
-app.use (passport.initialize());
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+
+passport.use(new LinkedInStrategy({
+  clientID: process.env.LINKEDIN_CLIENT_ID,
+  clientSecret: process.env.LINKEDIN_CLIENT_SECRET,
+  callbackURL: `${CONSTANTS.callbackUrlDomain}:${CONSTANTS.PORT}${CONSTANTS.callbackUrl}`,
+  scope: CONSTANTS.linkedInScopes,
+  state: true
+}, function( accessToken, refreshToken, profile, done){
+      req.session.accessToken = accessToken;
+
+      console.log(accessToken)
+      process.nextTick( function () {
+        return done(null, profile);
+      });
+}));
+
 
 app.use('/auth', callback);
 app.use(express.static(path.join(__dirname, 'public')));
@@ -58,7 +58,7 @@ app.get('/*', (req, res) => {
 app.get(CONSTANTS.authUrl,passport.authenticate(CONSTANTS.strategy, { state: '' }));
 
 app.get(CONSTANTS.callbackUrl,passport.authenticate(CONSTANTS.strategy, {
- successRedirect:CONSTANTS.successUrl,
+  successRedirect:CONSTANTS.successUrl,
   failureRedirect:CONSTANTS.failureUrl,
 })
 );
