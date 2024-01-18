@@ -1,6 +1,6 @@
 import React, {useState} from "react"
 
-const App = () => {
+function App () {
   const [isAuthenticated, setAuthentication] = useState(false);
  
 
@@ -9,13 +9,13 @@ const App = () => {
     console.log("api hit!");
   };
 
-
+return (
     <div>
 
-<button onClick={linkedInlogin}>Login to Linkedin</button>
+      <button onClick={linkedInlogin}>Login to Linkedin</button>
 
     </div>
-  
+  )
 };
 
 export default App;

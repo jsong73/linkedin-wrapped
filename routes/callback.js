@@ -68,17 +68,17 @@ router.get("/linkedin/callback", async (req, res) => {
 
                    
 
-                        res.status(200).json({
-                            token: token,
-                            user_info: {
-                                LinkedinID,
-                                name,
-                                email,
-                                picture,
-                            },
-                        });
+                        // res.status(200).json({
+                        //     token: token,
+                        //     user_info: {
+                        //         LinkedinID,
+                        //         name,
+                        //         email,
+                        //         picture,
+                        //     },
+                        // });
            
-                        // res.redirect("http://localhost:3000/profile");
+                        res.redirect("http://localhost:3000/profile");
 
                         // res.JSON({
                         //     token: token,
