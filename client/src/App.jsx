@@ -2,6 +2,7 @@ import React from "react";
 
 
 function App() {
+  
 
   const linkedInlogin = () => {
     window.open("http://localhost:3001/auth/linkedin", "_self");

@@ -16,7 +16,6 @@ router.get(
 
 // localhost:3001/auth/linkedin/callback
 router.get("/linkedin/callback", async (req, res) => {
-
     try {
         // console.log(req.query.id);
 
@@ -33,6 +32,7 @@ router.get("/linkedin/callback", async (req, res) => {
             .then((res) => {
                 access_token = res.data.access_token;
                 console.log("access_token--> ", access_token);
+
             })
             .catch((err) => {
                 console.log(err);
@@ -53,7 +53,7 @@ router.get("/linkedin/callback", async (req, res) => {
                 .then((response) => {
                     const user_info = response.data;
                     console.log("user info-->", user_info)
-
+    
                     if (user_info) {
                         const LinkedinID = user_info.sub;
                         const name = user_info.name;
@@ -67,8 +67,6 @@ router.get("/linkedin/callback", async (req, res) => {
                         { LinkedinID: LinkedinID, name: name, email: email, picture: picture },
                         process.env.JWT_SECRET
                         );
-
-                   
 
                         res.status(200).json({
                             token: token,
