@@ -1,5 +1,4 @@
 import React from "react";
-
 import linkedin from "react-linkedin-login-oauth2/assets/linkedin.png";
 
 
