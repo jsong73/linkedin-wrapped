@@ -68,23 +68,18 @@ router.get("/linkedin/callback", async (req, res) => {
                         process.env.JWT_SECRET
                         );
 
-                        res.status(200).json({
-                            token: token,
-                            user_info: {
-                                LinkedinID,
-                                name,
-                                email,
-                                picture,
-                            },
-                        });
-                    
-                        // res.redirect("http://localhost:3000/profile");
-                     
-
-                        // res.JSON({
+                        // res.status(200).json({
                         //     token: token,
-                        //     user_info: user_info,
+                        //     user_info: {
+                        //         LinkedinID,
+                        //         name,
+                        //         email,
+                        //         picture,
+                        //     },
                         // });
+                        
+                       
+                        res.redirect(`http://127.0.0.1:5173/home?token=${token}`);
 
                     } else {
               
@@ -116,6 +111,28 @@ router.get("/linkedin/callback", async (req, res) => {
     }
 });
 
+router.post("/getinfo", (req, res) => {
+    try {
+        const token = req.body.token;
+
+        if (!token) {
+            return res.status(400).json({ message: "Token must be provided" });
+        }
+
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        console.log("payload=>", payload);
+        res.status(200).json({
+            message: "User Verified",
+            user: payload,
+        });
+    } catch (error) {
+        console.error("Token Verification Error: ", error);
+        res.status(500).json({
+            message: "Internal Server Error",
+            error: error,
+        });
+    }
+});
 
 
  module.exports = router;
